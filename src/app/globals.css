@@ -1,3 +1,9 @@
+/* Outfit font  */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+/* Inter font  */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 @import "tailwindcss";
 
 @theme inline {
@@ -5,6 +11,85 @@
   --font-mono: var(--font-geist-mono);
 }
 
+* {
+  font-family: "Outfit", sans-serif;
+  resize: none;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Edge */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Internet Explorer */
 body {
+  -ms-overflow-style: none;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@theme {
+  --color-appColor: #1d9bf0;
+  --color-bgBlue: hsl(210 50% 97.1%);
+  /* --color-bgBlue: hsl(210 40% 96.1%); */
+  --font-interFamily: "Inter", sans-serif;
+}
+
+.inter-font {
+  font-family: var(--font-interFamily);
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-slide-out {
+  animation: slideOut 0.3s ease-in forwards;
+}
+
+/* spinner  */
+.loader {
+  width: 25px;
+  height: 25px;
+  margin-inline: 5px;
+  border: 3px solid #ccc;
+  border-top: 3px solid #1d9bf0;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.input-form {
+  @apply w-full my-1 mb-2 px-2 py-2 border border-gray-300 rounded focus:outline-appColor;
+}
+
+.yoki {
+  @apply border-2 border-red-500;
 }

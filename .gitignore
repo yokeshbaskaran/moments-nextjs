@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/generated/prisma/
+src/generated
 /.pnp
 .pnp.*
 .yarn/*

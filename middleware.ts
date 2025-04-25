@@ -13,8 +13,8 @@ export async function middleware(request: NextRequest) {
     const path = url.pathname;
     // console.log("path", path);
 
-    const protectedRoutes = ["/ "];
-    const authRoutes = ["/ "];
+    const protectedRoutes = ["/"];
+    const authRoutes = ["/authpage"];
 
     const isProtectedRoute = protectedRoutes.includes(path);
 

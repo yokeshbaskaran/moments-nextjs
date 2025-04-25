@@ -27,3 +27,15 @@ export async function supabaseServer() {
         }
     )
 }
+
+export async function getUser() {
+    const { auth } = await supabaseServer();
+    const data = await auth.getUser();
+    const user = data.data.user;
+    return user;
+}
+
+export async function protectRoute() {
+    const user = await getUser();
+    if (!user) throw new Error("Unauthorized");
+}

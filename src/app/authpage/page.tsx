@@ -1,0 +1,202 @@
+"use client";
+
+import Image from "next/image";
+import React, { useState, useTransition } from "react";
+import toast from "react-hot-toast";
+import { loginAccount, registerAccount } from "../actions/auth";
+import { useRouter } from "next/navigation";
+import { Login, Register } from "../utlis/types";
+
+const Authpage = () => {
+  const [auth, setauth] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
+
+  const [isPending, startTransition] = useTransition();
+
+  //navigate
+  const router = useRouter();
+
+  const handleRegister = async (data: Register) => {
+    console.log("register user", data);
+
+    if (!formData.username || !formData.email || !formData.password) {
+      toast.error(`Enter details to ${auth ? "Register" : "login"}`);
+      return;
+    }
+
+    startTransition(async () => {
+      const { errorMessage } = await registerAccount(data);
+
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        router.push("/");
+        toast.success("Verification link has sent to your email");
+      }
+    });
+  };
+
+  const handleLogin = async (data: Login) => {
+    console.log("login user", data);
+
+    if (!formData.email || !formData.password) {
+      toast.error(`Enter details to ${auth ? "Register" : "login"}`);
+      return;
+    }
+
+    startTransition(async () => {
+      const { errorMessage } = await loginAccount(data);
+
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        router.push("/");
+        toast.success("User logined");
+      }
+    });
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (auth) {
+      handleRegister(formData);
+    } else {
+      handleLogin(formData);
+    }
+  };
+
+  return (
+    <section className="h-full px-3 flex">
+      {/* left section */}
+      <div className="hidden w-1/2 lg:flex">
+        {/* heart wallpaper when desktop*/}
+        <Image
+          width={350}
+          height={350}
+          src="/heart.png"
+          alt="auth-logo"
+          className="w-full max-w-[650px] mx-auto p-24"
+        />
+      </div>
+
+      {/* right section */}
+      <div className="w-full lg:w-1/2 py-8 lg:p-8">
+        <div className="mx-auto max-w-md flex flex-col justify-center space-y-3">
+          <div className="flex flex-col items-start lg:items-center justify-center">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={40}
+              height={40}
+              className="my-7 lg:my-10 self-center"
+            />
+
+            <h2 className="my-1 font-semibold text-3xl">
+              {auth ? "Create an account" : "Login to your account"}
+            </h2>
+            <p className="text-gray-500 text-lg">
+              Enter your details to
+              {auth ? " create account" : " login"}
+            </p>
+          </div>
+
+          <form className="lg:px-3">
+            {/* username only on Register  */}
+            {auth && (
+              <>
+                <div className="mt-5 flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
+                  <input
+                    name="username"
+                    type="text"
+                    placeholder="Enter your name"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    className="block min-w-0 grow py-2 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="mt-5 flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
+              <input
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="block min-w-0 grow py-2 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+              />
+            </div>
+
+            <div className="mt-5 flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
+              <input
+                name="password"
+                type="password"
+                placeholder="Enter password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="block min-w-0 grow py-2 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+              />
+            </div>
+
+            <button
+              onClick={handleSubmit}
+              className="w-full mt-5 my-2 p-2 text-white bg-appColor rounded capitalize cursor-pointer"
+              disabled={isPending}
+            >
+              {isPending ? "Loading" : auth ? "register" : "login"}
+            </button>
+          </form>
+
+          {/* <div>
+            {isError && error && (
+              <p className="text-red-500 text-center">{error.message}</p>
+            )}
+          </div> */}
+
+          {/* divider  */}
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-gray-400"></span>
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-2 text-gray-500">Or</span>
+            </div>
+          </div>
+
+          {/* Login/Signup button  */}
+          <button
+            className="text-center hover:underline hover:text-appColor cursor-pointer"
+            onClick={() => setauth(!auth)}
+          >
+            {auth
+              ? "Already having a account? Login here"
+              : "Don't have an account? Sign up"}
+          </button>
+
+          <div className="my-2 text-center text-gray-500 text-sm">
+            By continuing, you agree to our
+            <span className="hover:text-appColor underline cursor-pointer">
+              Terms of Service
+            </span>
+            <span className="px-1">and</span>
+            <span className="hover:text-appColor underline cursor-pointer">
+              Privacy Policy.
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Authpage;

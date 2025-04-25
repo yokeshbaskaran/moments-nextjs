@@ -43,3 +43,7 @@ PORT=
 MONGO_DB_URL=
 
 ```
+
+Packages:
+npm install axios
+npm install react-hot-toast & add Toatser in root file \*
