@@ -57,7 +57,7 @@ const Createpost = () => {
         toast.success(res.message);
         setDescription("");
       } else {
-        toast.error(res.message);
+        toast.error(res.message || "Error in createpost");
       }
     });
   };
