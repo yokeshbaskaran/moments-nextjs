@@ -13,8 +13,8 @@ export async function middleware(request: NextRequest) {
     const path = url.pathname;
     // console.log("path", path);
 
-    const protectedRoutes = ["/"];
-    const authRoutes = ["/authpage"];
+    const protectedRoutes = [""]; // routes wanted to protect
+    const authRoutes = ["/authpage"]; // anyone can visit the page
 
     const isProtectedRoute = protectedRoutes.includes(path);
 
@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
         const user = await getUser(request, response);
 
         if (isProtectedRoute && !user) {
-            return NextResponse.redirect(new URL("/login", request.url));
+            return NextResponse.redirect(new URL("/authpage", request.url));
         }
 
         if (isAuthRoute && user) {

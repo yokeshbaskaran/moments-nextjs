@@ -1,15 +1,13 @@
-"use client";
-
-import { useAppContext } from "@/context/AppContext";
+import Createpost from "@/components/Createpost";
+import AllPosts from "@/components/AllPosts";
 
 export default function Home() {
-  const { user } = useAppContext();
-  console.log("user", user);
-
   return (
     <>
-      <div>
-        <h2 className="text-xl">Next app is here</h2>
+      <div className="my-5 p-5">
+        <Createpost />
+
+        <AllPosts />
       </div>
     </>
   );

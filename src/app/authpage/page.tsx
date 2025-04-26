@@ -5,7 +5,7 @@ import React, { useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { loginAccount, registerAccount } from "../actions/auth";
 import { useRouter } from "next/navigation";
-import { Login, Register } from "../utlis/types";
+import { Login, Register } from "../../helpers/types";
 
 const Authpage = () => {
   const [auth, setauth] = useState(false);
@@ -21,7 +21,7 @@ const Authpage = () => {
   const router = useRouter();
 
   const handleRegister = async (data: Register) => {
-    console.log("register user", data);
+    // console.log("register user", data);
 
     if (!formData.username || !formData.email || !formData.password) {
       toast.error(`Enter details to ${auth ? "Register" : "login"}`);
@@ -29,7 +29,8 @@ const Authpage = () => {
     }
 
     startTransition(async () => {
-      const { errorMessage } = await registerAccount(data);
+      const { errorMessage, data: registerData } = await registerAccount(data);
+      console.log("registerData", registerData);
 
       if (errorMessage) {
         toast.error(errorMessage);
@@ -41,7 +42,7 @@ const Authpage = () => {
   };
 
   const handleLogin = async (data: Login) => {
-    console.log("login user", data);
+    // console.log("login user", data);
 
     if (!formData.email || !formData.password) {
       toast.error(`Enter details to ${auth ? "Register" : "login"}`);

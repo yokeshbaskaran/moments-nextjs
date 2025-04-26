@@ -1,25 +1,17 @@
 "use client";
 
-import { supabaseClient } from "@/supabase/client";
-import { User } from "@supabase/supabase-js";
 import { createContext, useContext, useEffect, useState } from "react";
+import { supabaseClient } from "@/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
-interface ContextType {
+interface AppContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  dataChanged: boolean;
+  setDataChanged: (value: boolean) => void;
 }
 
-const AppContext = createContext<ContextType | undefined>(undefined);
-
-export function useAppContext() {
-  const context = useContext(AppContext);
-
-  if (!context) {
-    throw new Error("useAppContext must be used within an AppContextProvider");
-  }
-
-  return context;
-}
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppContextProvider = ({
   children,
@@ -29,27 +21,38 @@ export const AppContextProvider = ({
   const [user, setUser] = useState<User | null>(null);
   const { auth } = supabaseClient();
 
-  const fetchUser = async () => {
-    const {
-      data: { session },
-    } = await auth.getSession();
-
-    setUser(session?.user ?? null);
-  };
-
-  const { data: listener } = auth.onAuthStateChange((_, session) =>
-    setUser(session?.user ?? null)
-  );
+  const [dataChanged, setDataChanged] = useState(false);
 
   useEffect(() => {
-    fetchUser();
+    const getUser = async () => {
+      const {
+        data: { session },
+      } = await auth.getSession();
+      setUser(session?.user ?? null);
+      setDataChanged(!dataChanged);
+    };
+
+    getUser();
+
+    const { data: listener } = auth.onAuthStateChange(async (_, session) => {
+      if (session?.user) {
+        await getUser();
+      } else {
+        setUser(null);
+      }
+    });
 
     return () => {
-      listener.subscription.unsubscribe();
+      listener?.subscription.unsubscribe();
     };
-  }, []);
+  }, [auth, dataChanged]);
 
-  const contextValues = { user, setUser };
+  const contextValues = {
+    user,
+    setUser,
+    dataChanged,
+    setDataChanged,
+  };
 
   return (
     <>
@@ -58,4 +61,12 @@ export const AppContextProvider = ({
       </AppContext.Provider>
     </>
   );
+};
+
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext must be used within an AppProvider");
+  }
+  return context;
 };

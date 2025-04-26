@@ -1,7 +1,7 @@
 "use server";
 
 import { supabaseServer } from "@/supabase/server";
-import { Login, Register } from "../utlis/types";
+import { Login, Register } from "../../helpers/types";
 
 export async function registerAccount({ email, password, username }: Register) {
     // const data = { email, password, username }
@@ -9,10 +9,12 @@ export async function registerAccount({ email, password, username }: Register) {
 
     //supabase 
     const { auth } = await supabaseServer();
-    const { error } = await auth.signUp({
-        email, password, options: {
+    const { data, error } = await auth.signUp({
+        email,
+        password,
+        options: {
             data: {
-                username
+                username: username
             }
         }
     });
@@ -21,7 +23,7 @@ export async function registerAccount({ email, password, username }: Register) {
         return { errorMessage: error.message }
     }
 
-    return { errorMessage: null }
+    return { errorMessage: null, data }
 }
 
 export async function loginAccount({ email, password, }: Login) {
@@ -42,9 +44,6 @@ export async function loginAccount({ email, password, }: Login) {
 }
 
 export async function logout() {
-    // const data = { email, password }
-    // console.log("user-data:", data);
-
     //supabase 
     const { auth } = await supabaseServer();
     const { error } = await auth.signOut()
