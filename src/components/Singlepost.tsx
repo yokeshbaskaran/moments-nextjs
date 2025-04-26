@@ -34,13 +34,16 @@ const Singlepost = ({ post }: SinglePostProps) => {
 
       {/* Post Image */}
       {post.image && (
-        <div className="w-full h-48 relative">
+        <div
+          // className="yoki w-full h-48 relative object-contain overflow-hidden"
+          className="w-full h-[290px] object-cover cursor-pointer"
+        >
           <Image
             src={post.image}
-            alt="post-img"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-md"
+            width={250}
+            height={250}
+            className="size-full object-contain"
+            alt="Description of the image content"
           />
         </div>
       )}

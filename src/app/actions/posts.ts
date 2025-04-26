@@ -1,6 +1,6 @@
 "use server"
 
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient()
 
@@ -42,8 +42,9 @@ export async function createPost(formData: FormData) {
         })
         return { success: true, message: 'Todo added' }
     } catch (error) {
-        console.log("Error addTodo:", error);
-        return { success: false, message: 'Todo failed to add' }
+        return { error: error }
+        // console.log("Error addTodo:", error);
+        // return { success: false, message: 'Todo failed to add' }
     }
 }
 
