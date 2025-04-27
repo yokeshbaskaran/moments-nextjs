@@ -27,28 +27,34 @@ export const useAppContext = () => {
 
 export const AppContextProvider = ({
   children,
+  serverUser,
 }: {
   children: React.ReactNode;
+  serverUser: User | null;
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(serverUser);
+  const [loading, setLoading] = useState(!serverUser);
+
   const { auth } = supabaseClient();
 
   const [dataChanged, setDataChanged] = useState(false);
 
   useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { session },
-      } = await auth.getSession();
-      setUser(session?.user ?? null);
-      setDataChanged(!dataChanged);
-    };
+    if (!serverUser) {
+      const getUser = async () => {
+        const {
+          data: { session },
+        } = await auth.getSession();
+        setUser(session?.user ?? null);
+        setLoading(false);
+      };
 
-    getUser();
+      getUser();
+    }
 
     const { data: listener } = auth.onAuthStateChange(async (_, session) => {
       if (session?.user) {
-        await getUser();
+        setUser(session.user);
       } else {
         setUser(null);
       }
@@ -57,7 +63,7 @@ export const AppContextProvider = ({
     return () => {
       listener?.subscription.unsubscribe();
     };
-  }, [auth, dataChanged]);
+  }, [auth, serverUser]);
 
   const contextValues = {
     user,

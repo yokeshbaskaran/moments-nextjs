@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider, { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
+import { getUser } from "@/supabase/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +21,13 @@ export const metadata: Metadata = {
   description: "Capture the moments and share it with the world!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUser(); // Fetch user here (server side)
+
   return (
     <html lang="en">
       <body
@@ -33,7 +36,7 @@ export default function RootLayout({
         <QueryProvider>
           {/* query-client */}
 
-          <AppContextProvider>
+          <AppContextProvider serverUser={user}>
             {/* app is here  */}
 
             <Navbar />

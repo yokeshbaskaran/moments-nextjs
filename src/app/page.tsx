@@ -1,12 +1,13 @@
+"use client";
+
 import Createpost from "@/components/Createpost";
 import AllPosts from "@/components/AllPosts";
-import { getUser } from "@/supabase/server";
 import Link from "next/link";
 import Logout from "@/components/Logout";
+import { useAppContext } from "@/context/AppContext";
 
-export default async function Home() {
-  const user = await getUser();
-  console.log("user from server", user);
+export default function Home() {
+  const { user } = useAppContext();
 
   return (
     <>
