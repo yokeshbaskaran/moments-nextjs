@@ -1,22 +1,30 @@
 "use client";
 
 import { getPosts } from "@/app/actions/posts";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Singlepost from "./Singlepost";
 import { Post } from "../helpers/types";
+import { useQuery } from "@tanstack/react-query";
 
 const AllPosts = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  // const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
-    allPosts();
-  }, []);
+  const {
+    data: posts = [],
+    isLoading,
+    isError,
+  } = useQuery<Post[]>({
+    queryKey: ["posts"],
+    queryFn: getPosts,
+  });
 
-  const allPosts = async () => {
-    const data = await getPosts();
-    // console.log("posts-data", data);
-    setPosts(data);
-  };
+  if (isLoading) {
+    return <div>Loading Posts</div>;
+  }
+
+  if (isError) {
+    return <div>Error Fetching posts!</div>;
+  }
 
   return (
     <div className="p-2">

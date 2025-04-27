@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { loginAccount, registerAccount } from "../actions/auth";
 import { useRouter } from "next/navigation";
 import { Login, Register } from "../../helpers/types";
+import { useMutation } from "@tanstack/react-query";
+import { useAppContext } from "@/context/AppContext";
 
 const Authpage = () => {
   const [auth, setauth] = useState(false);
@@ -19,45 +21,60 @@ const Authpage = () => {
 
   //navigate
   const router = useRouter();
+  const { dataChanged, setDataChanged } = useAppContext();
 
-  const handleRegister = async (data: Register) => {
-    // console.log("register user", data);
+  // Register mutation
+  const { mutate: registerMutate } = useMutation({
+    mutationFn: registerAccount,
+    onSuccess: (registerData) => {
+      // console.log("registerData", registerDa/ta);
+      if (registerData.errorMessage) {
+        toast.error(registerData.errorMessage);
+      } else {
+        router.push("/");
+        toast.success("Verification link has been sent to your email");
+      }
+    },
+    onError: () => {
+      toast.error("Error creating new user");
+    },
+  });
 
+  // Login mutation
+  const { mutate: loginMutate } = useMutation({
+    mutationFn: loginAccount,
+    onSuccess: (loginData) => {
+      if (loginData.errorMessage) {
+        toast.error(loginData.errorMessage);
+      } else {
+        router.push("/");
+        toast.success("User logged in");
+      }
+    },
+    onError: () => {
+      toast.error("Error in user login");
+    },
+  });
+
+  const handleRegister = (data: Register) => {
     if (!formData.username || !formData.email || !formData.password) {
       toast.error(`Enter details to ${auth ? "Register" : "login"}`);
       return;
     }
 
-    startTransition(async () => {
-      const { errorMessage, data: registerData } = await registerAccount(data);
-      console.log("registerData", registerData);
-
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        router.push("/");
-        toast.success("Verification link has sent to your email");
-      }
+    startTransition(() => {
+      registerMutate(data);
     });
   };
 
-  const handleLogin = async (data: Login) => {
-    // console.log("login user", data);
-
+  const handleLogin = (data: Login) => {
     if (!formData.email || !formData.password) {
       toast.error(`Enter details to ${auth ? "Register" : "login"}`);
       return;
     }
 
-    startTransition(async () => {
-      const { errorMessage } = await loginAccount(data);
-
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        router.push("/");
-        toast.success("User logined");
-      }
+    startTransition(() => {
+      loginMutate(data);
     });
   };
 
@@ -73,6 +90,8 @@ const Authpage = () => {
     } else {
       handleLogin(formData);
     }
+
+    setDataChanged(!dataChanged);
   };
 
   return (
