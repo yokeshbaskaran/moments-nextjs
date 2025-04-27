@@ -4,7 +4,6 @@ import "./globals.css";
 import QueryProvider, { AppContextProvider } from "@/context/AppContext";
 import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
