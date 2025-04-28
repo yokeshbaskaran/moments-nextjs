@@ -1,21 +1,27 @@
-"use server"
+import { supabaseClient } from "@/supabase/client";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient()
+const supabase = supabaseClient()
 
 export async function getPosts() {
-    const allPosts = await prisma.post.findMany()
-    // console.log("allPosts in supabase", allPosts);
-    return allPosts
+    try {
+        const { data: posts, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false })
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return posts;
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        throw error;
+    }
 }
+
 
 export async function createPost(formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const tags = formData.get("tags") as string;
     const image = formData.get("image") as string;
-    const userId = formData.get("userId") as string;
     const username = formData.get("username") as string;
 
     // const data = {
@@ -26,25 +32,44 @@ export async function createPost(formData: FormData) {
     //     userId,
     //     username
     // }
-
     // console.log("allcreatePostPosts in supabase", data);
 
     try {
-        await prisma.post.create({
-            data: {
-                title,
-                description,
-                tags,
-                image,
-                userId,
-                username
-            }
-        })
-        return { success: true, message: 'Todo added' }
+        const { data, error } = await supabase
+            .from('posts')  // Name of your Supabase table
+            .insert([
+                {
+                    title,
+                    description,
+                    tags,
+                    image,
+                    username
+                }
+            ]);
+
+        if (error) {
+            throw new Error(error.message);
+        }
+
+        return { success: true, message: 'Post added successfully', data };
     } catch (error) {
-        return { error: error }
-        // console.log("Error addTodo:", error);
-        // return { success: false, message: 'Todo failed to add' }
+        console.error("Error creating post:", error);
+        return { error: error };
     }
 }
 
+
+export async function deletePost(postId: string) {
+    try {
+        const { error } = await supabase.from('posts').delete().eq('id', postId);
+
+        if (error) {
+            return { errorMessage: error.message }
+        }
+
+        return { success: true }
+    } catch (error) {
+        console.error("Error delete-post:", error);
+        throw error;
+    }
+}

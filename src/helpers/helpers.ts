@@ -20,5 +20,6 @@ export const formatDate = (isoTimestamp: Date) => {
             return `${count}${label}`;
         }
     }
+
     return "now";
 };

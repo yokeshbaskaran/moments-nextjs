@@ -17,18 +17,18 @@
 }
 
 /* Hide scrollbar for Chrome, Safari, and Edge */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 /* Hide scrollbar for Firefox */
-html {
+/* html {
   scrollbar-width: none;
-}
+} */
 
 /* Hide scrollbar for Internet Explorer */
 body {
-  -ms-overflow-style: none;
+  /* -ms-overflow-style: none; */
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -86,8 +86,17 @@ body {
   }
 }
 
+/* form data  */
 .input-form {
-  @apply w-full my-1 mb-2 px-2 py-2 border border-gray-300 rounded focus:outline-appColor;
+  @apply w-full my-1 px-2 py-2 border border-gray-300 rounded focus:outline-appColor;
+}
+
+label {
+  @apply font-medium text-lg;
+}
+
+input {
+  @apply font-normal;
 }
 
 .yoki {

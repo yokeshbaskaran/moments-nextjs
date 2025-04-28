@@ -15,8 +15,8 @@ export interface Post {
     image: string;
     userId: string;
     username: string;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    // updatedAt: Date;
 }
 
 export interface SinglePostProps {

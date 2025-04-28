@@ -95,7 +95,7 @@ const Authpage = () => {
   };
 
   return (
-    <section className="h-full px-3 flex">
+    <section className="flex max-md:pt-10">
       {/* left section */}
       <div className="hidden w-1/2 lg:flex">
         {/* heart wallpaper when desktop*/}
@@ -104,20 +104,22 @@ const Authpage = () => {
           height={350}
           src="/heart.png"
           alt="auth-logo"
-          className="w-full max-w-[650px] mx-auto p-24"
+          className="w-full max-w-[650px] mx-auto p-20"
         />
       </div>
 
       {/* right section */}
-      <div className="w-full lg:w-1/2 py-8 lg:p-8">
+      <div className="w-full lg:w-1/2 my-3 py-5 lg:p-5">
         <div className="mx-auto max-w-md flex flex-col justify-center space-y-3">
-          <div className="flex flex-col items-start lg:items-center justify-center">
+          <div className="flex flex-col items-center lg:items-center justify-center">
+            {/* Camera logo  */}
+
             <Image
               src="/logo.png"
               alt="logo"
               width={40}
               height={40}
-              className="my-7 lg:my-10 self-center"
+              className="mt-7 mb-3 lg:my-8 self-center"
             />
 
             <h2 className="my-1 font-semibold text-3xl">
@@ -133,38 +135,38 @@ const Authpage = () => {
             {/* username only on Register  */}
             {auth && (
               <>
-                <div className="mt-5 flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
+                <div className="mt-5 flex items-center rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
                   <input
                     name="username"
                     type="text"
                     placeholder="Enter your name"
                     value={formData.username}
                     onChange={handleInputChange}
-                    className="block min-w-0 grow py-2 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                    className="block min-w-0 grow py-2 pr-3 pl-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
                   />
                 </div>
               </>
             )}
 
-            <div className="mt-5 flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
+            <div className="mt-5 flex items-center rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
               <input
                 name="email"
                 type="email"
                 placeholder="Enter email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="block min-w-0 grow py-2 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                className="block min-w-0 grow py-2 pr-3 pl-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
               />
             </div>
 
-            <div className="mt-5 flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
+            <div className="mt-5 flex items-center rounded-md bg-white outline-1 -outline-offset-1 outline-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-appColor">
               <input
                 name="password"
                 type="password"
                 placeholder="Enter password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="block min-w-0 grow py-2 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
+                className="block min-w-0 grow py-2 pr-3 pl-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
               />
             </div>
 
@@ -184,7 +186,7 @@ const Authpage = () => {
           </div> */}
 
           {/* divider  */}
-          <div className="relative my-4">
+          <div className="relative my-2">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t border-gray-400"></span>
             </div>
