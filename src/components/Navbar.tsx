@@ -45,7 +45,7 @@ const Navbar = () => {
       } else {
         setUser(null);
         router.push("/authpage");
-        toast.success("User logged out");
+        toast.error("User logged out");
       }
     });
   };

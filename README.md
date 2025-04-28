@@ -9,23 +9,22 @@ Moments - Capture the moments and share it with the world!
 ## 🛠 Tech Stack
 
 - **Stacks:** Next.js, TypeScript
-- **Database:** PostgreSQL (prisma)
-- **Authentication:** Supabase auth
-- **Hosting:** vercel
+- **Database:** Supabase
+- **Authentication:** Supabase Authentication
+- **Hosting:** Render
 
 ---
 
-<!-- ## 📢 Features
+## 📢 Features
 
-✅ User authentication (JWT-based login & signup)
-✅ Create, read, update, and delete (CRUD) tweets
-✅ Like and interact with tweets
-✅ Responsive design for mobile and desktop
-✅ Error handling & toast notifications
+✅ User Authentication: JWT-based login and signup to ensure secure access.
+✅ Create, Read, Update, Delete Tweets (CRUD): A full-featured platform for posting, editing, deleting the posts.
+✅ Responsive Design: Works seamlessly across mobile and desktop devices, ensuring a smooth user experience.
+✅ Error Handling & Toast Notifications: Built-in error handling and notifications to improve the user experience.
 
-- Inspired (UI) by Twitter and Random user.
+- Inspired (UI) by Random user.
 
---- -->
+---
 
 ## 🚀 Installation & Setup
 
@@ -39,11 +38,13 @@ cd moments
 ### Set up environment variables
 
 ```bash
-PORT=
-MONGO_DB_URL=
+DATABASE_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 ```
 
-Packages:
+# Packages used:
+
 npm install axios
 npm install react-hot-toast & add Toatser in root file \*

@@ -21,10 +21,10 @@ const AllPosts = () => {
   });
 
   return (
-    <div className="md:px-3 py-3 mb-10">
+    <div className="md:px-3 py-2 mb-10">
       <section>
-        <div className="flex justify-center items-center gap-2">
-          <h2 className="my-5 text-2xl font-semibold text-center">
+        <div className="mt-4 flex justify-center items-center gap-2">
+          <h2 className="text-3xl font-semibold text-center">
             Moments Captured in camera
           </h2>
           <Image src="/logo.png" width={30} height={30} alt="camera" />

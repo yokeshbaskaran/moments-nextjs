@@ -172,7 +172,9 @@ const Authpage = () => {
 
             <button
               onClick={handleSubmit}
-              className="w-full mt-5 my-2 p-2 text-white bg-appColor rounded capitalize cursor-pointer"
+              className={`w-full mt-5 my-2 p-2 text-white bg-appColor rounded capitalize cursor-pointer ${
+                isPending && "opacity-70"
+              }`}
               disabled={isPending}
             >
               {isPending ? "Loading" : auth ? "register" : "login"}
